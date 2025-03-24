@@ -29,7 +29,8 @@ class LoginRequest extends FormRequest
         if(!$user->hasRole('admin_room_911')){
             LoginAttempt::create([
                 'status'=>LoginStatus::FAILED,
-                'ip'=>$this->ip()
+                'ip'=>$this->ip(),
+                'user_id'=>$user->id
             ]);
             return false;
         }
@@ -61,14 +62,21 @@ class LoginRequest extends FormRequest
         if (! Auth::attempt($this->only('document', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
+            LoginAttempt::create([
+                'status' => LoginStatus::FAILED,
+                'ip' => $this->ip(),
+                'user_id' => User::where('document',$this->input('document'))->first()->id
+            ]);
+
             throw ValidationException::withMessages([
                 'document' => trans('auth.failed'),
             ]);
         }
 
         LoginAttempt::create([
-            'status'=>LoginStatus::SUCCESS,
-            'ip'=>$this->ip()
+            'status' => LoginStatus::SUCCESS,
+            'ip' => $this->ip(),
+            'user_id' => Auth::id()
         ]);
 
         RateLimiter::clear($this->throttleKey());

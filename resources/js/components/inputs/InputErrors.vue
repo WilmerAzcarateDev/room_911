@@ -12,7 +12,7 @@
     @tailwind components;
     @layer components {
         .message{
-            @apply text-sm text-red-300;
+            @apply text-sm text-red-500;
         }
     }
 </style>

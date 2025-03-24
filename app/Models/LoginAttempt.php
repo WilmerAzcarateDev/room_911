@@ -18,8 +18,6 @@ class LoginAttempt extends Model
     public function scompeDateRange(Builder $query,$start,$end)
     {
         if($start && $end) return $query->whereBetween('created_at',[$start,$end]);
-        if($start) return $query->where('created_at',$start);
-        if($end) return $query->where('created_at',$end);
         return $query;
     }
 

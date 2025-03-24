@@ -1,17 +1,18 @@
 <template>
-    <main class="layout-content">
-        <slot></slot>
+    <main class="layout-container">
+        <div class="layout-content">
+            <slot></slot>
+        </div>
     </main>
 </template>
 
 <script setup lang="ts">
-
 </script>
 
 <style>
     @tailwind components;
     @layer components {
-        body {
+        .layout-container {
             @apply bg-gray-200;
             @apply w-screen h-screen;
             @apply flex justify-center items-center;

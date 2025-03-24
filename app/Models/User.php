@@ -56,13 +56,30 @@ class User extends Authenticatable
         return 'document';
     }
 
+    public function scopeCountAccess(Builder $query,$start,$end)
+    {
+ 
+        return $query ->withCount([
+            'login_attempts as total_access' => function($query) use ($start, $end) {
+                if ($start && $end) {
+                    $query->whereBetween('created_at', [$start, $end]);
+                }
+            }
+        ]);
+
+    }
+
     public function scopeAdmins911(Builder $query)
     {
         return $query->role('admin_room_911');
     }
 
-    public function scopeByProductionDepartament(Builder $query,$production_departament_id)
-    {
+    public function scopeByProductionDepartament(Builder $query,?int $production_departament_id)
+    {   
+        $query = $query->with('production_departament');
+        if(!$production_departament_id) {
+            return $query;
+        }
         return $query->where('production_departament_id',$production_departament_id);
     }
 
