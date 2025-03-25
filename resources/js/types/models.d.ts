@@ -1,3 +1,5 @@
+import { ELoginStatus } from "@/enums";
+
 export interface IUser {
     id:number;
     email:string;
@@ -13,6 +15,7 @@ export interface ILoginHistory {
     user_id:number;
     status:ELoginStatus;
     created_at:Date;
+    ip:string;
     user?:IUser;
 }
 
@@ -30,10 +33,4 @@ export interface IProductionDepartament{
     id:number;
     name:string;
     users?:IUser[];
-}
-
-export enum ELoginStatus{
-    SUCCESS = 'succesfull',
-    FAILED = 'faiLed',
-    UNIDENTIFIED = 'unidentified'
 }

@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('users.index',[],true));
+        return redirect()->intended(route('web.users.index',[],true));
 
     }
 

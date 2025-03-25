@@ -23,6 +23,13 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function latest_login_attempts(User $user)
+    {
+        $login_attempts = $user->login_attempts()->take(10)->latest()->get();
+
+        return response()->json($login_attempts);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

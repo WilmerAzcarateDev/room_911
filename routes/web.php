@@ -8,19 +8,22 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Auth::check() 
-        ? redirect()->route('users.index')
+        ? redirect()->route('web.users.index')
         : redirect()->route('login');
 })->name('home');
 
 Route::middleware('auth')->group(function (){
     Route::prefix('admin')->group(function(){
         Route::prefix('users')->group(function(){
-            Route::get('',[UserController::class,'index'])->name('users.index');
+            Route::get('',[UserController::class,'index'])->name('web.users.index');
         });
     });
 
     Route::prefix('api')->group(function(){
         Route::apiResource('users',ApiUser::class);
+        Route::prefix('users')->group(function(){
+            Route::get('{user}/latest_logins',[ApiUser::class,'latest_login_attempts'])->name('users.latest_logins');
+        });
     });
 });
 

@@ -34,9 +34,7 @@
                                         <button class="update button">
                                             Update
                                         </button>
-                                        <button class="info button">
-                                            History
-                                        </button>
+                                        <AuthHistoryModal :employee="user"></AuthHistoryModal>
                                         <button class="danger button">
                                             Delete
                                         </button>
@@ -59,6 +57,7 @@
     import { Head } from '@inertiajs/vue3';
     import axios from 'axios';    
     import { computed, onMounted, ref } from 'vue';
+    import AuthHistoryModal from '@/components/modals/user/AuthHistoryModal.vue';
 
     axios.defaults.withCredentials = true;
 
@@ -130,20 +129,6 @@
         }
         .button-container{
             @apply flex flex-wrap justify-end gap-2;
-        }
-
-        .button{
-            @apply border border-slate-600 text-slate-600 rounded-sm;
-            @apply py-2 px-3;
-        }
-        .button.primary{
-            @apply bg-slate-600 border-none text-slate-200;
-        }
-        .button.info{
-            @apply border-yellow-600 text-yellow-600;
-        }
-        .button.danger{
-            @apply border-red-600 text-red-600;
         }
     }
 </style>
