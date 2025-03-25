@@ -8,7 +8,9 @@ export interface IUser {
     last_name:string;
     login_histories?:ILoginHistory[];
     total_access?:number;
+    production_departament_id?:number;
     production_departament?:IProductionDepartament;
+    is_admin:boolean;
 }
 
 export interface ILoginHistory {

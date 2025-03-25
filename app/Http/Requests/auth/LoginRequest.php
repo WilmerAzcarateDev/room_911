@@ -26,7 +26,7 @@ class LoginRequest extends FormRequest
             ]);
             return false;
         };
-        if(!$user->hasRole('admin_room_911')){
+        if(!$user->is_admin){
             LoginAttempt::create([
                 'status'=>LoginStatus::FAILED,
                 'ip'=>$this->ip(),

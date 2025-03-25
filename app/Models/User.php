@@ -22,6 +22,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
         'document',
         'email',
         'password',
@@ -37,6 +38,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $appends = ['is_admin'];
 
     /**
      * Get the attributes that should be cast.
@@ -54,6 +57,11 @@ class User extends Authenticatable
     public function username()
     {
         return 'document';
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->hasRole('admin_room_911');
     }
 
     public function scopeCountAccess(Builder $query,$start,$end)

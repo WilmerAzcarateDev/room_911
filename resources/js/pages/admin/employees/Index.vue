@@ -6,9 +6,7 @@
             </section>
             <section class="content-container">
                 <div class="content-header">
-                    <button class="primary button">
-                        New Employee
-                    </button>
+                    <UserForm></UserForm>
                 </div>
                 <div class="content-body">
                     <table class="table">
@@ -31,13 +29,9 @@
                                 <td class="num-col col">{{ user.total_access! }}</td>
                                 <td class="col">
                                     <div class="button-container">
-                                        <button class="update button">
-                                            Update
-                                        </button>
+                                        <UserForm :employee="user"></UserForm>
                                         <AuthHistoryModal :employee="user"></AuthHistoryModal>
-                                        <button class="danger button">
-                                            Delete
-                                        </button>
+                                        <UserDelete :employee="user"></UserDelete>
                                     </div>
                                 </td>
                             </tr>
@@ -58,6 +52,8 @@
     import axios from 'axios';    
     import { computed, onMounted, ref } from 'vue';
     import AuthHistoryModal from '@/components/modals/user/AuthHistoryModal.vue';
+    import UserForm from '@/components/modals/user/UserForm.vue';
+    import UserDelete from '@/components/modals/user/UserDelete.vue';
 
     axios.defaults.withCredentials = true;
 

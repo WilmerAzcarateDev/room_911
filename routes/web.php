@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\web\UserController;
 use App\Http\Controllers\api\UserController as ApiUser;
+use App\Http\Controllers\api\ProductionDepartamentController as ApiProductionDepartament;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +17,9 @@ Route::middleware('auth')->group(function (){
     Route::prefix('admin')->group(function(){
         Route::prefix('users')->group(function(){
             Route::get('',[UserController::class,'index'])->name('web.users.index');
+            Route::post('',[UserController::class,'store'])->name('web.users.store');
+            Route::put('{user}',[UserController::class,'update'])->name('web.users.update');
+            Route::delete('{user}',[UserController::class,'destroy'])->name('web.users.destroy');
         });
     });
 
@@ -25,6 +29,7 @@ Route::middleware('auth')->group(function (){
             Route::get('{user}/latest_logins',[ApiUser::class,'latest_login_attempts'])->name('users.latest_logins');
             Route::get('{user}/download/latest_logins',[ApiUser::class,'download_login_attempts'])->name('users.download.latest_logins');
         });
+        Route::apiResource('production-departaments',ApiProductionDepartament::class)->only('index');
     });
 });
 

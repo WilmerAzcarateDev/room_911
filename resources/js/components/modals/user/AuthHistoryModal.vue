@@ -1,5 +1,5 @@
 <template>
-    <Button :type="button_type" :click="openModal">
+    <Button :type="buttonEnum.INFO" :click="openModal">
         <div class="button-content">
             <span>History</span>
         </div>
@@ -65,7 +65,6 @@
     const loginEnum = ELoginStatus;
     const buttonEnum = EButtonType;
 
-    const button_type = ref<EButtonType>(EButtonType.INFO);
     const loading = ref(false);
     const visible = ref(false);
     const histories = ref<ILoginHistory[]>([]);
@@ -81,7 +80,7 @@
     async function downloadHistory(){
         await axios.get('/sanctum/csrf-cookie');
         const response = await axios.get(`/api/users/${props.employee.id}/download/latest_logins`, {
-            responseType: 'blob' // importante para obtener un blob
+            responseType: 'blob'
         });
         
         const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
@@ -133,6 +132,9 @@
 
         .modal-content__body{
             @apply p-2;
+        }
+        .table{
+            @apply w-full;
         }
 
         .table > thead {
