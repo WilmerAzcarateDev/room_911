@@ -114,6 +114,7 @@
             @apply fixed inset-0;
             @apply flex items-center justify-center;
             @apply bg-gray-900 bg-opacity-50;
+            z-index: 10;
         }
 
         .modal-content{

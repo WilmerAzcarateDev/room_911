@@ -20,11 +20,16 @@ class UserController extends Controller
     {
         $start = request()->query('start');
         $end = request()->query('end');
+        $document = request()->query('document');
         $production_departament_id = request()->query('production_departament_id');
         $users = User::with('login_attempts','production_departament')
             ->byProductionDepartament($production_departament_id)
-            ->countAccess($start,$end)
-            ->paginate();
+            ->countAccess($start,$end);
+
+        if($document){
+            $users = $users->where('document', 'like', '%' . $document . '%');        
+        }
+        $users = $users->paginate();
         return response()->json($users);
     }
 

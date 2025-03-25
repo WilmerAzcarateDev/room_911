@@ -67,7 +67,7 @@ class User extends Authenticatable
     public function scopeCountAccess(Builder $query,$start,$end)
     {
  
-        return $query ->withCount([
+        $query = $query ->withCount([
             'login_attempts as total_access' => function($query) use ($start, $end) {
                 if ($start && $end) {
                     $query->whereBetween('created_at', [$start, $end]);
@@ -75,6 +75,11 @@ class User extends Authenticatable
             }
         ]);
 
+        if($start && $end)
+        {
+           $query = $query->having('total_access', '>=', 1);
+        }
+        return $query;
     }
 
     public function scopeAdmins911(Builder $query)

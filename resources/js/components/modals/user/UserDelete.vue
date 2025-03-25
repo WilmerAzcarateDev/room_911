@@ -65,6 +65,7 @@
   @layer components{
     .modal-container{
       @apply fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50;
+      z-index: 10;
     }
     .modal-content{
       @apply bg-white p-4 shadow-lg w-fit h-fit rounded-sm;
