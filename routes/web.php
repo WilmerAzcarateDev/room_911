@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function (){
         Route::apiResource('users',ApiUser::class);
         Route::prefix('users')->group(function(){
             Route::get('{user}/latest_logins',[ApiUser::class,'latest_login_attempts'])->name('users.latest_logins');
+            Route::get('{user}/download/latest_logins',[ApiUser::class,'download_login_attempts'])->name('users.download.latest_logins');
         });
     });
 });

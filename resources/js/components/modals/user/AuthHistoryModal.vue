@@ -39,7 +39,7 @@
                 </table>
             </div>
             <div class="modal-content__footer">
-                <Button :type="buttonEnum.SECONDARY" :click="openModal">
+                <Button :type="buttonEnum.SECONDARY" :click="downloadHistory">
                     <div class="button-content">
                         <i class="pi pi-file-export"></i>
                         <span>Download all history</span>
@@ -76,6 +76,23 @@
 
     function closeModal(){
         visible.value = false;
+    }
+
+    async function downloadHistory(){
+        await axios.get('/sanctum/csrf-cookie');
+        const response = await axios.get(`/api/users/${props.employee.id}/download/latest_logins`, {
+            responseType: 'blob' // importante para obtener un blob
+        });
+        
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+        const link = document.createElement('a');
+        link.href = url;
+        const today = new Date().toISOString().split('T')[0];
+        link.setAttribute('download', `login-history-${today}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
     }
 
     watch(
