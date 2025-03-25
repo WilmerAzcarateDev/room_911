@@ -12,8 +12,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::unprepared('DROP PROCEDURE IF EXISTS sp_insert_user');
-        
         $path = database_path('migrations/sql/stored_procedures/sp_insert_user.sql');
         $sql = file_get_contents($path); 
         DB::unprepared($sql);
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared("DROP PROCEDURE IF EXISTS sp_insert_user");
+        DB::unprepared("DROP PROCEDURE IF EXISTS sp_import_csv_users");
     }
 };

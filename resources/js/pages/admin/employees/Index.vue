@@ -60,10 +60,10 @@
   
       </section>
   
-      <!-- Sección del contenido principal (tabla de usuarios) -->
       <section class="content-container">
         <div class="content-head">
             <UserForm />
+            <UserMassCreate></UserMassCreate>
         </div>
         <div class="content-body">
           <table class="table">
@@ -136,7 +136,8 @@
   import UserForm from '@/components/modals/user/UserForm.vue';
   import UserDelete from '@/components/modals/user/UserDelete.vue';
   import Button from '@/components/Button.vue';
-import { EButtonType } from '@/enums';
+  import UserMassCreate from '@/components/modals/user/UserMassCreate.vue';
+  import { EButtonType } from '@/enums';
   
   axios.defaults.withCredentials = true;
 

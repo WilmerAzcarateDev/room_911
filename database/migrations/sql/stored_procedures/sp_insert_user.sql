@@ -1,31 +1,32 @@
-CREATE PROCEDURE sp_insert_user(
-    IN p_document VARCHAR(255),
-    IN p_name VARCHAR(255),
-    IN p_last_name VARCHAR(255),
-    IN p_email VARCHAR(255),
-    IN p_password VARCHAR(255),
-    IN p_production_departament_name VARCHAR(255)
-)
+DROP PROCEDURE IF EXISTS sp_importar_datos;
+
+CREATE PROCEDURE sp_importar_datos()
 BEGIN
-    DECLARE v_production_departament_id BIGINT;
-    DECLARE v_role_id BIGINT;
-    DECLARE v_user_id BIGINT;
-    
-    SELECT id INTO v_production_departament_id
-      FROM production_departaments
-      WHERE name = p_production_departament_name
-      LIMIT 1;
-    
+    -- Insertar los datos en la tabla users usando la tabla temporal 'temp_import'
     INSERT INTO users (document, name, last_name, email, password, production_departament_id, created_at, updated_at)
-      VALUES (p_document, p_name, p_last_name, p_email, p_password, v_production_departament_id, NOW(), NOW());
-    
-    SET v_user_id = LAST_INSERT_ID();
-    
-    SELECT id INTO v_role_id
-      FROM roles
-      WHERE name = 'employee'
-      LIMIT 1;
-    
+    SELECT 
+       t.DOCUMENT,
+       t.EMPLOYEE_NAME,
+       t.EMPLOYEE_LAST_NAME,
+       t.EMPLOYEE_EMAIL,
+       '$2y$12$wN0pwIFyFvNLg6CwZqinJ.Hz3Eym4R3b7vlRkcM4B3QblLMLQPSOC' AS password,
+       pd.id,
+       NOW(),
+       NOW()
+    FROM temp_import t
+    LEFT JOIN production_departaments pd 
+       ON pd.name = t.PRODUCTION_DEPARTAMENT;
+
+    -- Asignar el rol "employee" a los usuarios insertados
     INSERT INTO model_has_roles (role_id, model_type, model_id)
-      VALUES (v_role_id, 'App\\Models\\User', v_user_id);
+    SELECT 
+      r.id,
+      'App\\Models\\User',
+      u.id
+    FROM users u
+    JOIN temp_import t ON u.document = t.DOCUMENT
+    CROSS JOIN (SELECT id FROM roles WHERE name = 'employee' LIMIT 1) r;
+
+    -- Eliminar la tabla temporal
+    DROP TEMPORARY TABLE temp_import;
 END;

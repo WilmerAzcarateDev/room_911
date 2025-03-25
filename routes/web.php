@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function (){
         Route::prefix('users')->group(function(){
             Route::get('',[UserController::class,'index'])->name('web.users.index');
             Route::post('',[UserController::class,'store'])->name('web.users.store');
+            Route::post('mass_create',[UserController::class,'mass_store'])->name('web.users.mass_store');
             Route::put('{user}',[UserController::class,'update'])->name('web.users.update');
             Route::delete('{user}',[UserController::class,'destroy'])->name('web.users.destroy');
         });
