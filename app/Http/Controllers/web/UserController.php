@@ -25,16 +25,13 @@ class UserController extends Controller
             'file' => 'required|file|mimes:csv,txt'
         ]);
 
-        // Obtenemos el archivo enviado y lo almacenamos temporalmente
         $archivo = $request->file('file');
         $filename = 'import_' . time() . '.' . $archivo->getClientOriginalExtension();
         $rutaArchivo = $archivo->storeAs('imports', $filename);
         $fullPath = Storage::path($rutaArchivo);
 
         try {
-            // Ejecutar en una transacción para asegurar la misma conexión
             DB::transaction(function () use ($fullPath) {
-                // 1. Eliminar la tabla temporal si existe y crearla con colación uniforme
                 DB::unprepared("DROP TEMPORARY TABLE IF EXISTS temp_import");
                 DB::unprepared("
                     CREATE TEMPORARY TABLE temp_import (
@@ -46,7 +43,6 @@ class UserController extends Controller
                     ) COLLATE=utf8mb4_unicode_ci;
                 ");
 
-                // 2. Ejecutar LOAD DATA LOCAL INFILE sin utilizar prepared statements
                 $loadQuery = "
                     LOAD DATA LOCAL INFILE '" . addslashes($fullPath) . "'
                     INTO TABLE temp_import
@@ -57,13 +53,11 @@ class UserController extends Controller
                 ";
                 DB::unprepared($loadQuery);
 
-                // 3. Llamar al stored procedure que procesa los datos de la tabla temporal
                 DB::statement("CALL sp_importar_datos();");
             });
 
             return redirect()->route('web.users.index')->with('success', 'Datos importados correctamente.');
         } catch (\Exception $e) {
-            // En caso de error, retornamos una redirección con mensaje de error (respuesta válida para Inertia)
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }

@@ -125,7 +125,7 @@
     </AdminLayout>
   </template>
   
-  <script setup lang="ts">
+<script setup lang="ts">
   import AdminLayout from '@/layout/AdminLayout.vue';
   import { IPaginate, IProductionDepartament, IUser } from '@/types/models';
   import { Head } from '@inertiajs/vue3';
@@ -216,7 +216,7 @@
     fetchUsers();
     fetchDepartaments();
   });
-  </script>
+</script>
   
   <style scoped>
   @tailwind components;
@@ -231,13 +231,13 @@
       @apply w-full;
     }
     .table > thead {
-      @apply bg-gray-400;
-    }
-    .table > tbody > tr {
       @apply bg-gray-200;
     }
-    .oddRow{
-      @apply bg-gray-100;
+    .table > tbody > tr {
+      @apply bg-gray-300;
+    }
+    .table > tbody > tr.oddRow{
+      @apply bg-gray-400;
     }
     .col{
       @apply px-3 py-2;

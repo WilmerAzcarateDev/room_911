@@ -48,7 +48,7 @@
     @layer components{
         body{
             @apply bg-slate-200;
-            @apply w-screen h-[100vh];
+            @apply w-screen min-h-[100vh];
             @apply flex flex-col justify-between;
         }
         .header{
